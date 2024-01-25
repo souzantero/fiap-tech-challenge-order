@@ -1,0 +1,727 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "FIAP Tech Challenge",
+    "description": "API para o desafio técnico da FIAP",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Felipe Antero",
+      "email": "souzantero@gmail.com",
+      "url": "https://linkedin.com/in/souzantero"
+    }
+  },
+  "servers": [
+    {
+      "url": "/api",
+      "description": "Servidor de desenvolvimento"
+    }
+  ],
+  "paths": {
+    "/customers": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Cria um novo cliente",
+        "operationId": "createCustomer",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Cliente criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/document/{document}": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Busca um cliente pelo CPF",
+        "operationId": "getCustomerByDocument",
+        "parameters": [
+          {
+            "name": "document",
+            "in": "path",
+            "description": "CPF do cliente",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9]{11}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Customer"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cliente não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Lista todos os pedidos não finalizados",
+        "operationId": "getOrders",
+        "responses": {
+          "200": {
+            "description": "Pedidos encontrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Order"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/checkout": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Cria um novo pedido",
+        "operationId": "createOrder",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OrderInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pedido criado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/status": {
+      "patch": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Atualiza o status de um pedido",
+        "operationId": "updateOrderStatus",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador único do pedido",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "RECEIVED",
+                      "PREPARING",
+                      "READY",
+                      "FINISHED"
+                    ],
+                    "example": "PREPARING",
+                    "description": "Status do pedido"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status do pedido atualizado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Order"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pedido não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/paid": {
+      "get": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Verifica se um pedido foi pago",
+        "operationId": "checkOrderPaid",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador único do pedido",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pedido pago",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "paid"
+                  ],
+                  "properties": {
+                    "paid": {
+                      "type": "boolean",
+                      "example": true,
+                      "description": "Indica se o pedido foi pago"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pedido não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/hooks/mercado-pago": {
+      "post": {
+        "tags": [
+          "Orders"
+        ],
+        "summary": "Webhook do Mercado Pago",
+        "operationId": "mercadoPagoWebhook",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Identificador único do pedido",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "approved",
+                      "pending",
+                      "in_process",
+                      "rejected",
+                      "cancelled",
+                      "refunded",
+                      "charged_back"
+                    ],
+                    "example": "approved",
+                    "description": "Status do pagamento"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Webhook recebido com sucesso"
+          },
+          "400": {
+            "description": "Requisição inválida"
+          },
+          "500": {
+            "description": "Erro interno"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Mensagem de erro",
+            "example": "Erro ao executar a operação"
+          }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "document"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único do cliente"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação do cliente"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização do cliente"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de exclusão do cliente"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255,
+            "example": "Tom Zé",
+            "description": "Nome do cliente"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "tomze@email.com",
+            "description": "E-mail do cliente",
+            "minLength": 3,
+            "maxLength": 255,
+            "pattern": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+          },
+          "document": {
+            "type": "string",
+            "description": "CPF do cliente",
+            "minLength": 11,
+            "maxLength": 11,
+            "pattern": "^[0-9]{11}$",
+            "example": "12345678900"
+          }
+        }
+      },
+      "CustomerInput": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "document"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255,
+            "example": "Tom Zé",
+            "description": "Nome do cliente"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "tomze@email.com",
+            "description": "E-mail do cliente",
+            "minLength": 3,
+            "maxLength": 255,
+            "pattern": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+          },
+          "document": {
+            "type": "string",
+            "description": "CPF do cliente",
+            "minLength": 11,
+            "maxLength": 11,
+            "pattern": "^[0-9]{11}$",
+            "example": "12345678900"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "price",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único do produto"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação do produto"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização do produto"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de exclusão do produto"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255,
+            "example": "Coca-Cola",
+            "description": "Nome do produto"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255,
+            "example": "Refrigerante de cola",
+            "description": "Descrição do produto"
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "example": 5.5,
+            "description": "Preço do produto"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "FOOD",
+              "DRINK",
+              "SIDE_DISH",
+              "DESSERT"
+            ],
+            "example": "DRINK",
+            "description": "Tipo do produto"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "required": [
+          "customerId",
+          "products"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único do pedido"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação do pedido"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização do pedido"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de exclusão do pedido"
+          },
+          "customerId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único do cliente"
+          },
+          "paid": {
+            "type": "boolean",
+            "example": true,
+            "description": "Indica se o pedido foi pago"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "RECEIVED",
+              "PREPARING",
+              "READY",
+              "FINISHED"
+            ],
+            "example": "RECEIVED",
+            "description": "Status do pedido"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OrderProduct"
+            },
+            "description": "Produtos do pedido"
+          }
+        }
+      },
+      "OrderProduct": {
+        "type": "object",
+        "required": [
+          "productId",
+          "quantity"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único do produto do pedido"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de criação do produto do pedido"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de atualização do produto do pedido"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Data de exclusão do produto do pedido"
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "example": 2,
+            "description": "Quantidade do produto"
+          },
+          "orderId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único do pedido"
+          },
+          "productId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único do produto"
+          },
+          "product": {
+            "$ref": "#/components/schemas/Product",
+            "description": "Produto do pedido"
+          }
+        }
+      },
+      "OrderInput": {
+        "type": "object",
+        "required": [
+          "customerId",
+          "products"
+        ],
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Identificador único do cliente"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "productId",
+                "quantity"
+              ],
+              "properties": {
+                "productId": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Identificador único do produto"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 2,
+                  "description": "Quantidade do produto"
+                }
+              }
+            },
+            "description": "Produtos do pedido"
+          }
+        }
+      }
+    }
+  }
+}

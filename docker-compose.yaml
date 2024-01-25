@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  server:
+    build: ./
+    ports:
+      - 3001:3000
+    restart: always
+    environment:
+      PORT: 3000
+      DATABASE_URL: "postgres://postgres:postgres@database:5432/fiap_tech_challenge_order_db"
+    depends_on:
+      - database
+
+  database:
+    image: postgres:15.3
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fiap_tech_challenge_order_db
+    volumes:
+      - database-data:/var/lib/postgresql/data
+
+volumes:
+  database-data:
