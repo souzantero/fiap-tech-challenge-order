@@ -3,6 +3,7 @@ export type EnvironmentName = 'development' | 'production';
 export interface Environment {
   readonly name: EnvironmentName;
   readonly port: number;
+  readonly productUrl: string;
 }
 
 if (process.env.NODE_ENV) {
@@ -23,5 +24,6 @@ if (process.env.PORT) {
 
 export const environment: Environment = {
   name: (process.env.NODE_ENV as EnvironmentName) || 'development',
-  port: Number(process.env.PORT) || 3000,
+  port: Number(process.env.PORT) || 3001,
+  productUrl: process.env.PRODUCT_URL || 'http://localhost:3000/api',
 };

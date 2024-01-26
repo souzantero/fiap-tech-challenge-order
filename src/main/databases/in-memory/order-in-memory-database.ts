@@ -39,7 +39,7 @@ export class OrderInMemoryDatabase implements OrderRepository {
   updateOneById(id: string, data: UpdateOneOrderData): Promise<Order> {
     throw new Error('Method not implemented.');
   }
-  
+
   findOneById(id: string): Promise<Order | null> {
     throw new Error('Method not implemented.');
   }

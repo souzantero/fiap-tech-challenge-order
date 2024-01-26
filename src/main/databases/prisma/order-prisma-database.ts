@@ -1,7 +1,7 @@
 import {
   PrismaClient,
   Order as OrderPrismaEntity,
-  OrderProduct as OrderProductPrismaEntity
+  OrderProduct as OrderProductPrismaEntity,
 } from '@prisma/client';
 import {
   CreateOneOrderData,
@@ -20,7 +20,7 @@ export type OrderPrismaEntityWithRelations = OrderPrismaEntity & {
 };
 
 export class OrderPrismaDatabase implements OrderRepository {
-  constructor(private readonly prisma: PrismaClient) { }
+  constructor(private readonly prisma: PrismaClient) {}
 
   static toModel(order: OrderPrismaEntityWithRelations): Order {
     const status = Object.values(OrderStatus).find(
@@ -56,7 +56,7 @@ export class OrderPrismaDatabase implements OrderRepository {
         },
       },
       include: {
-        orderProducts: true
+        orderProducts: true,
       },
     });
 
@@ -85,7 +85,7 @@ export class OrderPrismaDatabase implements OrderRepository {
         },
       },
       include: {
-        orderProducts: true
+        orderProducts: true,
       },
     });
 
@@ -98,7 +98,7 @@ export class OrderPrismaDatabase implements OrderRepository {
         id,
       },
       include: {
-        orderProducts: true
+        orderProducts: true,
       },
     });
 
@@ -117,7 +117,7 @@ export class OrderProductPrismaDatabase {
       deletedAt: order.deletedAt,
       orderId: order.orderId,
       productId: order.productId,
-      quantity: order.quantity
+      quantity: order.quantity,
     };
   }
 }

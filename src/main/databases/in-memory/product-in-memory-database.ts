@@ -1,11 +1,7 @@
 import { Product } from '../../../core/domain/entities/product';
-import {
-  FindManyProductsRepository
-} from '../../../core/domain/repositories/product-repository';
+import { FindManyProductsRepository } from '../../../core/domain/repositories/product-repository';
 
-export class ProductInMemoryDatabase
-  implements
-  FindManyProductsRepository {
+export class ProductInMemoryDatabase implements FindManyProductsRepository {
   private readonly products: Product[] = [];
 
   async findManyByIds(ids: string[]): Promise<Product[]> {
