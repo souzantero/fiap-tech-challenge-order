@@ -1,5 +1,5 @@
-import { CustomerInMemoryDatabase } from "../../../main/databases/in-memory/customer-in-memory-database";
-import { FindCustomer } from "./find-customer";
+import { CustomerInMemoryDatabase } from '../../../main/databases/in-memory/customer-in-memory-database';
+import { FindCustomer } from './find-customer';
 
 describe('FindCustomer', () => {
   describe('findOneByDocument', () => {
@@ -8,6 +8,6 @@ describe('FindCustomer', () => {
       const findCustomer = new FindCustomer(customerRepository);
       const customer = findCustomer.findOneByDocument('12345678901');
       expect(customer).toBeNull();
-    })
-  })
-})
+    });
+  });
+});
