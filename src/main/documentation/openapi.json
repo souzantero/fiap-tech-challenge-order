@@ -1,7 +1,7 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "FIAP Tech Challenge",
+    "title": "FIAP Tech Challenge Order",
     "description": "API para o desafio técnico da FIAP",
     "version": "1.0.0",
     "contact": {
