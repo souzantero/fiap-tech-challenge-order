@@ -4,7 +4,7 @@ import {
   makeAddOneOrderHttpController,
   makeCheckOrderIsPaidHttpController,
   makeFindOrdersHttpController,
-  makeMercadoPagoWebhookHttpController,
+  makePayOrderHttpController,
   makeUpdateOrderStatusHttpController,
 } from '../factories/order-factories';
 import { adaptRoute } from './route';
@@ -14,14 +14,14 @@ export const orderRoutes = (router: Router, repository: Repository) => {
     '/orders/checkout',
     adaptRoute(makeAddOneOrderHttpController(repository)),
   );
-  router.post(
-    '/orders/:id/hooks/mercado-pago',
-    adaptRoute(makeMercadoPagoWebhookHttpController(repository)),
-  );
   router.get('/orders', adaptRoute(makeFindOrdersHttpController(repository)));
   router.get(
     '/orders/:id/paid',
     adaptRoute(makeCheckOrderIsPaidHttpController(repository)),
+  );
+  router.post(
+    '/orders/:id/pay',
+    adaptRoute(makePayOrderHttpController(repository)),
   );
   router.patch(
     '/orders/:id/status',

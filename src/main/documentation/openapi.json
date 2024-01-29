@@ -355,13 +355,13 @@
         }
       }
     },
-    "/orders/{id}/hooks/mercado-pago": {
+    "/orders/{id}/pay": {
       "post": {
         "tags": [
           "Orders"
         ],
-        "summary": "Webhook do Mercado Pago",
-        "operationId": "mercadoPagoWebhook",
+        "summary": "Atualiza o status de um pedido para pago",
+        "operationId": "updateOrderPaid",
         "parameters": [
           {
             "name": "id",
@@ -374,37 +374,9 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "status"
-                ],
-                "properties": {
-                  "status": {
-                    "type": "string",
-                    "enum": [
-                      "approved",
-                      "pending",
-                      "in_process",
-                      "rejected",
-                      "cancelled",
-                      "refunded",
-                      "charged_back"
-                    ],
-                    "example": "approved",
-                    "description": "Status do pagamento"
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "204": {
-            "description": "Webhook recebido com sucesso"
+            "description": "Status do pedido atualizado com sucesso"
           },
           "400": {
             "description": "Requisição inválida"

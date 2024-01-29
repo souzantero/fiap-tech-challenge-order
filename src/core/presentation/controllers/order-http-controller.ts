@@ -100,20 +100,14 @@ export class CheckOrderIsPaidHttpController
   }
 }
 
-export class MercadoPagoWebhookHttpController implements HttpController<void> {
+export class PayOrderHttpController implements HttpController<void> {
   constructor(private readonly updateOrder: UpdateOrder) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse<void>> {
     const { id } = request.params;
-    const { status } = request.body;
-
-    if (!status) {
-      throw new BadRequestError('Missing status');
-    }
 
     try {
-      const paid = status === 'approved';
-      await this.updateOrder.updateOneById(id, { paid });
+      await this.updateOrder.updateOneById(id, { paid: true });
       return HttpResponse.noContent();
     } catch (error) {
       if (error instanceof FindOneOrderByIdError)
