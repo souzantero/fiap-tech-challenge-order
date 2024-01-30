@@ -16,14 +16,16 @@ export class FindOrders {
   }
 
   private sortOrdersByStatus(orders: Order[]): Order[] {
-    return orders.sort((a, b) => {
-      const aStatusOrder = this.getStatusOrder(a.status);
-      const bStatusOrder = this.getStatusOrder(b.status);
+    return orders.sort((a, b) => this.compareStatusOrder(a.status, b.status));
+  }
 
-      if (aStatusOrder < bStatusOrder) return -1;
-      if (aStatusOrder > bStatusOrder) return 1;
-      return 0;
-    });
+  private compareStatusOrder(a: OrderStatus, b: OrderStatus): number {
+    const aStatusOrder = this.getStatusOrder(a);
+    const bStatusOrder = this.getStatusOrder(b);
+
+    if (aStatusOrder < bStatusOrder) return -1;
+    if (aStatusOrder > bStatusOrder) return 1;
+    return 0;
   }
 
   private getStatusOrder(status: OrderStatus): number {
