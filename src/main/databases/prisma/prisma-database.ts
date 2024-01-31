@@ -11,10 +11,13 @@ export class PrismaDatabaseError extends Error {
 }
 
 export class PrismaDatabase implements Omit<Repository, 'product'> {
-  private readonly prisma: PrismaClient = new PrismaClient();
+  public readonly customer;
+  public readonly order;
 
-  public readonly customer = new CustomerPrismaDatabase(this.prisma);
-  public readonly order = new OrderPrismaDatabase(this.prisma);
+  constructor(private readonly prisma: PrismaClient = new PrismaClient()) {
+    this.customer = new CustomerPrismaDatabase(this.prisma);
+    this.order = new OrderPrismaDatabase(this.prisma);
+  }
 
   connect(): Promise<void> {
     return this.prisma.$connect();
