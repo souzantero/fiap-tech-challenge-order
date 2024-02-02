@@ -1,0 +1,29 @@
+service: fiap-tech-challenge-order
+frameworkVersion: '3'
+
+package:
+  patterns:
+    - '!node_modules/.prisma/client/libquery_engine-*'
+    - 'node_modules/.prisma/client/libquery_engine-rhel-*'
+    - '!node_modules/prisma/libquery_engine-*'
+    - '!node_modules/@prisma/engines/**'
+
+provider:
+  name: aws
+  region: us-west-2
+  runtime: nodejs20.x
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+  tags:
+    PROJECT: fiap-tech-challenge
+
+functions:
+  app:
+    handler: dist/main/lambda.handler
+    events:
+      - httpApi:
+          method: 'ANY'
+          path: '/{proxy+}'
+  
+plugins:
+  - serverless-offline

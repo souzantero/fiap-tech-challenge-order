@@ -10,9 +10,12 @@
     "build": "tsc -p tsconfig-build.json",
     "start": "NODE_ENV=production node dist/main/server.js",
     "start:dev": "NODE_ENV=development nodemon -L --watch ./src --exec ts-node ./src/main/server.ts",
+    "start:sls": "npm run build && sls offline start --stage development",
     "debug": "NODE_ENV=development nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/server.js",
     "test:unit": "jest",
-    "test:system": "cucumber-js"
+    "test:system": "cucumber-js",
+    "predeploy": "npm run build",
+    "deploy": "sls deploy --stage development --verbose"
   },
   "keywords": [],
   "author": "Antero, Felipe <souzantero@gmail.com>",
@@ -20,6 +23,7 @@
   "dependencies": {
     "@prisma/client": "^4.16.2",
     "express": "^4.18.2",
+    "serverless-http": "^3.2.0",
     "swagger-ui-express": "^4.6.3"
   },
   "devDependencies": {
@@ -39,6 +43,7 @@
     "prettier": "2.8.8",
     "prisma": "^4.16.2",
     "rimraf": "^5.0.1",
+    "serverless-offline": "^13.3.3",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
