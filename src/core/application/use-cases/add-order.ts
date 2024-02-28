@@ -1,3 +1,4 @@
+import { OrderAddedEvent } from 'src/core/domain/events/order-added-event';
 import { Order, OrderStatus } from '../../domain/entities/order';
 import { FindOneCustomerRepository } from '../../domain/repositories/customer-repository';
 import {
@@ -11,6 +12,7 @@ export class AddOrder {
     private readonly orderRepository: OrderRepository,
     private readonly findOneCustomer: FindOneCustomerRepository,
     private readonly findManyProducts: FindManyProductsRepository,
+    private readonly orderAddedEvent: OrderAddedEvent,
   ) {}
 
   async addOne(data: AddOneOrderData): Promise<Order> {
@@ -34,7 +36,9 @@ export class AddOrder {
       paid: false,
     };
 
-    return this.orderRepository.createOne(order);
+    const createdOrder = await this.orderRepository.createOne(order);
+    await this.orderAddedEvent.onAdded(createdOrder);
+    return createdOrder;
   }
 }
 
