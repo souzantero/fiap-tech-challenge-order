@@ -4,6 +4,7 @@ export interface Environment {
   readonly name: EnvironmentName;
   readonly port: number;
   readonly productUrl: string;
+  readonly amqpUrl: string;
 }
 
 if (process.env.NODE_ENV) {
@@ -26,4 +27,5 @@ export const environment: Environment = {
   name: (process.env.NODE_ENV as EnvironmentName) || 'development',
   port: Number(process.env.PORT) || 3001,
   productUrl: process.env.PRODUCT_URL || 'http://localhost:3000/api',
+  amqpUrl: process.env.AMQP_URL || 'amqp://localhost',
 };
