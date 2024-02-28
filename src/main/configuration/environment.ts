@@ -5,6 +5,7 @@ export interface Environment {
   readonly port: number;
   readonly productUrl: string;
   readonly amqpUrl: string;
+  readonly orderAddedSQSQueueUrl: string;
 }
 
 if (process.env.NODE_ENV) {
@@ -28,4 +29,5 @@ export const environment: Environment = {
   port: Number(process.env.PORT) || 3001,
   productUrl: process.env.PRODUCT_URL || 'http://localhost:3000/api',
   amqpUrl: process.env.AMQP_URL || 'amqp://localhost',
+  orderAddedSQSQueueUrl: process.env.AWS_SQS_ORDER_ADDED_QUEUE_URL || '',
 };

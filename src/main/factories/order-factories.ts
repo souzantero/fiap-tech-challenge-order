@@ -10,6 +10,9 @@ import {
   UpdateOrderStatusHttpController,
 } from '../../core/presentation/controllers/order-http-controller';
 import { CatchErrorHttpControllerDecorator } from '../../core/presentation/decorators/catch-error-http-controller-decorator';
+import { environment } from '../configuration/environment';
+import { AmazonSQSOrderMessenger } from '../messaging/amazonsqs/amazonsqs-order-messenger';
+import { AmazonSQSService } from '../messaging/amazonsqs/amazonsqs-service';
 
 export const makeFindOrdersHttpController = (repository: Repository) => {
   return new CatchErrorHttpControllerDecorator(
@@ -18,9 +21,19 @@ export const makeFindOrdersHttpController = (repository: Repository) => {
 };
 
 export const makeAddOneOrderHttpController = (repository: Repository) => {
+  const amazonSQSOrderMessenger = new AmazonSQSOrderMessenger(
+    AmazonSQSService.getInstance().sqs,
+    environment.orderAddedSQSQueueUrl,
+  );
+
   return new CatchErrorHttpControllerDecorator(
     new AddOneOrderHttpController(
-      new AddOrder(repository.order, repository.customer, repository.product),
+      new AddOrder(
+        repository.order,
+        repository.customer,
+        repository.product,
+        amazonSQSOrderMessenger,
+      ),
     ),
   );
 };
