@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { Repository } from '../core/domain/repositories/repository';
 import { App } from './app';
 import { environment } from './configuration/environment';
