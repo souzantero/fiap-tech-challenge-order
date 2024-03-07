@@ -6,6 +6,7 @@ import { App } from './app';
 import { environment } from './configuration/environment';
 import { PrismaDatabase } from './databases/prisma/prisma-database';
 import { ProductFetchProvider } from './providers/fetch/product-fetch-provider';
+import { pool } from './pool';
 
 const prismaDatabase = new PrismaDatabase();
 const productProvider = new ProductFetchProvider(environment.productUrl);
@@ -17,3 +18,4 @@ const repository: Repository = {
 
 const app = App.create(repository);
 app.start(environment.port);
+pool();

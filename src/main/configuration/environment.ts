@@ -6,6 +6,8 @@ export interface Environment {
   readonly productUrl: string;
   readonly amqpUrl: string;
   readonly orderAddedSQSQueueUrl: string;
+  readonly paymentApprovedSQSQueueUrl: string;
+  readonly paymentRejectedSQSQueueUrl: string;
 }
 
 if (process.env.NODE_ENV) {
@@ -25,9 +27,13 @@ if (process.env.PORT) {
 }
 
 export const environment: Environment = {
-  name: (process.env.NODE_ENV as EnvironmentName) || 'development',
-  port: Number(process.env.PORT) || 3001,
-  productUrl: process.env.PRODUCT_URL || 'http://localhost:3000/api',
-  amqpUrl: process.env.AMQP_URL || 'amqp://localhost',
-  orderAddedSQSQueueUrl: process.env.AWS_SQS_ORDER_ADDED_QUEUE_URL || '',
+  name: (process.env.NODE_ENV as EnvironmentName) ?? 'development',
+  port: Number(process.env.PORT) ?? 3001,
+  productUrl: process.env.PRODUCT_URL ?? 'http://localhost:3000/api',
+  amqpUrl: process.env.AMQP_URL ?? 'amqp://localhost',
+  orderAddedSQSQueueUrl: process.env.AWS_SQS_ORDER_ADDED_QUEUE_URL ?? '',
+  paymentApprovedSQSQueueUrl:
+    process.env.AWS_SQS_PAYMENT_APPROVED_QUEUE_URL ?? '',
+  paymentRejectedSQSQueueUrl:
+    process.env.AWS_SQS_PAYMENT_REJECTED_QUEUE_URL ?? '',
 };

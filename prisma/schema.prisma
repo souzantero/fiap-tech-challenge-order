@@ -29,6 +29,7 @@ enum OrderStatus {
   PREPARING
   READY
   FINISHED
+  CANCELLED
 }
 
 model Order {

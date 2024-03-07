@@ -1,4 +1,8 @@
-import { UpdateOrder } from '../../core/application/use-cases';
+import {
+  AcceptOrder,
+  CancelOrder,
+  UpdateOrder,
+} from '../../core/application/use-cases';
 import { AddOrder } from '../../core/application/use-cases/add-order';
 import { FindOrders } from '../../core/application/use-cases/find-orders';
 import { Repository } from '../../core/domain/repositories/repository';
@@ -13,6 +17,22 @@ import { CatchErrorHttpControllerDecorator } from '../../core/presentation/decor
 import { environment } from '../configuration/environment';
 import { AmazonSQSOrderMessenger } from '../messaging/amazonsqs/amazonsqs-order-messenger';
 import { AmazonSQSService } from '../messaging/amazonsqs/amazonsqs-service';
+
+export const makeFindOrders = (repository: Repository) => {
+  return new FindOrders(repository.order);
+};
+
+export const makeUpdateOrder = (repository: Repository) => {
+  return new UpdateOrder(repository.order, makeFindOrders(repository));
+};
+
+export const makeAcceptOrder = (repository: Repository) => {
+  return new AcceptOrder(makeUpdateOrder(repository));
+};
+
+export const makeCancelOrder = (repository: Repository) => {
+  return new CancelOrder(makeUpdateOrder(repository));
+};
 
 export const makeFindOrdersHttpController = (repository: Repository) => {
   return new CatchErrorHttpControllerDecorator(
@@ -40,9 +60,7 @@ export const makeAddOneOrderHttpController = (repository: Repository) => {
 
 export const makeUpdateOrderStatusHttpController = (repository: Repository) => {
   return new CatchErrorHttpControllerDecorator(
-    new UpdateOrderStatusHttpController(
-      new UpdateOrder(repository.order, new FindOrders(repository.order)),
-    ),
+    new UpdateOrderStatusHttpController(makeUpdateOrder(repository)),
   );
 };
 
@@ -54,8 +72,6 @@ export const makeCheckOrderIsPaidHttpController = (repository: Repository) => {
 
 export const makePayOrderHttpController = (repository: Repository) => {
   return new CatchErrorHttpControllerDecorator(
-    new PayOrderHttpController(
-      new UpdateOrder(repository.order, new FindOrders(repository.order)),
-    ),
+    new PayOrderHttpController(makeUpdateOrder(repository)),
   );
 };
