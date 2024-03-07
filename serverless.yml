@@ -15,6 +15,10 @@ provider:
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
     PRODUCT_URL: ${env:PRODUCT_URL}
+    AWS_ACCESS_KEY_ID: ${env:AWS_ACCESS_KEY_ID}
+    AWS_SECRET_ACCESS_KEY: ${env:AWS_SECRET_ACCESS_KEY}
+    AWS_REGION: ${env:AWS_REGION}
+    AWS_SQS_ORDER_ADDED_QUEUE_URL: ${env:AWS_SQS_ORDER_ADDED_QUEUE_URL}
   tags:
     PROJECT: fiap-tech-challenge
 
@@ -28,11 +32,11 @@ functions:
   onPaymentApproved:
     handler: dist/main/lambda.onPaymentApproved
     events:
-      - sqs: ${env:AWS_SQS_PAYMENT_APPROVED_QUEUE_URL}
+      - sqs: ${env:AWS_SQS_PAYMENT_APPROVED_QUEUE_ARN}
   onPaymentRejected:
     handler: dist/main/lambda.onPaymentRejected
     events:
-      - sqs: ${env:AWS_SQS_PAYMENT_REJECTED_QUEUE_URL}
+      - sqs: ${env:AWS_SQS_PAYMENT_REJECTED_QUEUE_ARN}
   
 plugins:
   - serverless-offline
