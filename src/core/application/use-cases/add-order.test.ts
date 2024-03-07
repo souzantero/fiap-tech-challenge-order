@@ -51,10 +51,14 @@ describe('AddOrder', () => {
       const findManyProducts = {
         findManyByIds: jest.fn().mockResolvedValue([product]),
       } as any;
+      const orderAddedEvent = {
+        onAdded: jest.fn(),
+      } as any;
       const addOrder = new AddOrder(
         orderRepository,
         findOneCustomer,
         findManyProducts,
+        orderAddedEvent,
       );
       // Act
       const returnedOrder = await addOrder.addOne(data);
@@ -85,7 +89,12 @@ describe('AddOrder', () => {
       const findOneCustomer = {
         findOneById: jest.fn().mockResolvedValue(null),
       } as any;
-      const addOrder = new AddOrder(null as any, findOneCustomer, null as any);
+      const addOrder = new AddOrder(
+        null as any,
+        findOneCustomer,
+        null as any,
+        null as any,
+      );
       // Act
       const addOneOrder = addOrder.addOne(data);
       // Assert
@@ -119,6 +128,7 @@ describe('AddOrder', () => {
         null as any,
         findOneCustomer,
         findManyProducts,
+        null as any,
       );
       // Act
       const addOneOrder = addOrder.addOne(data);

@@ -25,6 +25,14 @@ functions:
       - httpApi:
           method: 'ANY'
           path: '/{proxy+}'
+  onPaymentApproved:
+    handler: dist/main/lambda.onPaymentApproved
+    events:
+      - sqs: ${env:AWS_SQS_PAYMENT_APPROVED_QUEUE_URL}
+  onPaymentRejected:
+    handler: dist/main/lambda.onPaymentRejected
+    events:
+      - sqs: ${env:AWS_SQS_PAYMENT_REJECTED_QUEUE_URL}
   
 plugins:
   - serverless-offline
