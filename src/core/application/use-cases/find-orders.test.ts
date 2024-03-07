@@ -85,14 +85,13 @@ describe('FindOrders', () => {
       expect(statusOrder).toBe(3);
     });
 
-    it('should throw error when status is invalid', () => {
+    it('should return 4 when status is another', () => {
       // Arrange
       const findOrders = new FindOrders(null as any);
       // Act
+      const statusOrder = findOrders['getStatusOrder'](OrderStatus.Cancelled);
       // Assert
-      return expect(() => findOrders['getStatusOrder']('any' as any)).toThrow(
-        new Error('Invalid order status: any'),
-      );
+      expect(statusOrder).toBe(4);
     });
   });
 
