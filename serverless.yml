@@ -18,7 +18,12 @@ provider:
     AWS_SQS_ORDER_ADDED_QUEUE_URL: ${env:AWS_SQS_ORDER_ADDED_QUEUE_URL}
   tags:
     PROJECT: fiap-tech-challenge
-
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "sqs:SendMessage"
+      Resource: ${env:AWS_SQS_ORDER_ADDED_QUEUE_ARN}
+    
 functions:
   app:
     handler: dist/main/lambda.handler
