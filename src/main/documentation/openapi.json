@@ -218,8 +218,7 @@
             "description": "Identificador único do pedido",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -306,8 +305,7 @@
             "description": "Identificador único do pedido",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -369,8 +367,7 @@
             "description": "Identificador único do pedido",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid"
+              "type": "string"
             }
           }
         ],
@@ -410,7 +407,6 @@
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
             "description": "Identificador único do cliente"
           },
           "createdAt": {
@@ -499,7 +495,6 @@
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
             "description": "Identificador único do produto"
           },
           "createdAt": {
@@ -559,7 +554,6 @@
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
             "description": "Identificador único do pedido"
           },
           "createdAt": {
@@ -579,7 +573,6 @@
           },
           "customerId": {
             "type": "string",
-            "format": "uuid",
             "description": "Identificador único do cliente"
           },
           "paid": {
@@ -616,7 +609,6 @@
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
             "description": "Identificador único do produto do pedido"
           },
           "createdAt": {
@@ -642,12 +634,10 @@
           },
           "orderId": {
             "type": "string",
-            "format": "uuid",
             "description": "Identificador único do pedido"
           },
           "productId": {
             "type": "string",
-            "format": "uuid",
             "description": "Identificador único do produto"
           },
           "product": {
@@ -665,7 +655,6 @@
         "properties": {
           "customerId": {
             "type": "string",
-            "format": "uuid",
             "description": "Identificador único do cliente"
           },
           "products": {
@@ -679,7 +668,6 @@
               "properties": {
                 "productId": {
                   "type": "string",
-                  "format": "uuid",
                   "description": "Identificador único do produto"
                 },
                 "quantity": {

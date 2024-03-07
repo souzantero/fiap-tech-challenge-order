@@ -37,7 +37,7 @@ export class FindOrders {
       case OrderStatus.Received:
         return 3;
       default:
-        throw new Error(`Invalid order status: ${status}`);
+        return 4;
     }
   }
 }

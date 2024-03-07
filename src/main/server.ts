@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -7,15 +8,18 @@ import { environment } from './configuration/environment';
 import { PrismaDatabase } from './databases/prisma/prisma-database';
 import { ProductFetchProvider } from './providers/fetch/product-fetch-provider';
 import { pool } from './pool';
+import { CustomerMongooseDatabase } from './databases/mongoose/customer-mongoose-database';
+import { OrderMongooseDatabase } from './databases/mongoose/order-mongoose-database';
 
-const prismaDatabase = new PrismaDatabase();
-const productProvider = new ProductFetchProvider(environment.productUrl);
-const repository: Repository = {
-  customer: prismaDatabase.customer,
-  order: prismaDatabase.order,
-  product: productProvider,
-};
+mongoose.connect(environment.databaseUrl).then(() => {
+  const repository: Repository = {
+    customer: new CustomerMongooseDatabase(),
+    order: new OrderMongooseDatabase(),
+    product: new ProductFetchProvider(environment.productUrl),
+  };
 
-const app = App.create(repository);
-app.start(environment.port);
+  const app = App.create(repository);
+  app.start(environment.port);
+});
+
 pool();
