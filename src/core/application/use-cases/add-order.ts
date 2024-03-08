@@ -32,7 +32,7 @@ export class AddOrder {
 
     const order = {
       ...data,
-      status: OrderStatus.Received,
+      status: OrderStatus.Pending,
       paid: false,
     };
 

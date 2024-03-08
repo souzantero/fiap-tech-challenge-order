@@ -25,6 +25,7 @@ model Customer {
 }
 
 enum OrderStatus {
+  PENDING
   RECEIVED
   PREPARING
   READY

@@ -69,7 +69,7 @@ describe('AddOrder', () => {
       ]);
       expect(orderRepository.createOne).toHaveBeenCalledWith({
         ...data,
-        status: OrderStatus.Received,
+        status: OrderStatus.Pending,
         paid: false,
       });
       expect(returnedOrder).toBe(order);
