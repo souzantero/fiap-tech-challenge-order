@@ -4,6 +4,7 @@ export interface Environment {
   readonly name: EnvironmentName;
   readonly port: number;
   readonly databaseUrl: string;
+  readonly authenticationUrl: string;
   readonly productUrl: string;
   readonly amqpUrl: string;
   readonly orderAddedSQSQueueUrl: string;
@@ -35,6 +36,8 @@ export const environment: Environment = {
   databaseUrl:
     process.env.DATABASE_URL ??
     'mongodb://root:mongopass@localhost:27017/orderdb?authSource=admin',
+  authenticationUrl:
+    process.env.AUTHENTICATION_URL ?? 'http://localhost:3004/api',
   productUrl: process.env.PRODUCT_URL ?? 'http://localhost:3000/api',
   amqpUrl: process.env.AMQP_URL ?? 'amqp://localhost',
   orderAddedSQSQueueUrl: process.env.AWS_SQS_ORDER_ADDED_QUEUE_URL ?? '',

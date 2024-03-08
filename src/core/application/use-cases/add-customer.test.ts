@@ -8,6 +8,7 @@ describe('AddCustomer', () => {
         name: 'Customer Name',
         email: 'anyemail',
         document: 'anydocument',
+        password: 'anypassword',
       };
 
       const createdCustomer = {
@@ -21,7 +22,11 @@ describe('AddCustomer', () => {
         findOneByEmail: jest.fn().mockResolvedValue(null),
       } as any;
 
-      const addCustomer = new AddCustomer(customerRepository);
+      const authenticator = {
+        signUp: jest.fn().mockResolvedValue(null),
+      } as any;
+
+      const addCustomer = new AddCustomer(customerRepository, authenticator);
 
       // Act
       const returnedCustomer = await addCustomer.addOne(data);
@@ -46,6 +51,7 @@ describe('AddCustomer', () => {
         name: 'Customer Name',
         email: 'anyemail',
         document: 'anydocument',
+        password: 'anypassword',
       };
 
       const customerRepository = {
@@ -53,7 +59,11 @@ describe('AddCustomer', () => {
         findOneByEmail: jest.fn().mockResolvedValue(null),
       } as any;
 
-      const addCustomer = new AddCustomer(customerRepository);
+      const authenticator = {
+        signUp: jest.fn().mockResolvedValue(null),
+      } as any;
+
+      const addCustomer = new AddCustomer(customerRepository, authenticator);
 
       // Act
       const addOneCustomer = addCustomer.addOne(data);
@@ -76,6 +86,7 @@ describe('AddCustomer', () => {
         name: 'Customer Name',
         email: 'anyemail',
         document: 'anydocument',
+        password: 'anypassword',
       };
 
       const customerRepository = {
@@ -83,7 +94,11 @@ describe('AddCustomer', () => {
         findOneByEmail: jest.fn().mockResolvedValue(data),
       } as any;
 
-      const addCustomer = new AddCustomer(customerRepository);
+      const authenticator = {
+        signUp: jest.fn().mockResolvedValue(null),
+      } as any;
+
+      const addCustomer = new AddCustomer(customerRepository, authenticator);
 
       // Act
       const addOneCustomer = addCustomer.addOne(data);

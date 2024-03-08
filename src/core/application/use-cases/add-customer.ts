@@ -1,25 +1,42 @@
+import { Authenticator } from 'src/core/domain/protocols/authenticator';
 import { Customer } from '../../domain/entities/customer';
 import { CustomerRepository } from '../../domain/repositories/customer-repository';
 
 export class AddCustomer {
-  constructor(private readonly customerRepository: CustomerRepository) {}
+  constructor(
+    private readonly customerRepository: CustomerRepository,
+    private readonly authenticator: Authenticator,
+  ) {}
 
-  async addOne(data: AddOneCustomerData): Promise<Customer> {
-    // Check if customer already exists by document
+  async addOne({
+    name,
+    email,
+    document,
+    password,
+  }: AddOneCustomerData): Promise<Customer> {
     const customerByDocument = await this.customerRepository.findOneByDocument(
-      data.document,
+      document,
     );
     if (customerByDocument)
       throw new AddOneCustomerError('Customer already exists');
 
-    // Check if customer already exists by email
-    const customerByEmail = await this.customerRepository.findOneByEmail(
-      data.email,
-    );
+    const customerByEmail = await this.customerRepository.findOneByEmail(email);
     if (customerByEmail)
       throw new AddOneCustomerError('Customer already exists');
 
-    return await this.customerRepository.createOne(data);
+    const createdCustomer = await this.customerRepository.createOne({
+      name,
+      email,
+      document,
+    });
+
+    await this.authenticator.singUp({
+      username: document,
+      password: password,
+      email: email,
+    });
+
+    return createdCustomer;
   }
 }
 
@@ -34,4 +51,5 @@ export type AddOneCustomerData = {
   name: string;
   email: string;
   document: string;
+  password: string;
 };

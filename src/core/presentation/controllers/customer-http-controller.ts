@@ -16,14 +16,15 @@ export class AddOneCustomerHttpController implements HttpController<Customer> {
   constructor(private readonly addCustomer: AddCustomer) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse<Customer>> {
-    const { name, email, document } = request.body;
-    if (!name || !email || !document)
+    const { name, email, document, password } = request.body;
+    if (!name || !email || !document || !password)
       throw new BadRequestError('Missing required fields');
     try {
       const customer = await this.addCustomer.addOne({
         name,
         email,
         document,
+        password,
       });
 
       return HttpResponse.created(customer);
