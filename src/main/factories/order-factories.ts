@@ -15,6 +15,11 @@ import {
 } from '../../core/presentation/controllers/order-http-controller';
 import { CatchErrorHttpControllerDecorator } from '../../core/presentation/decorators/catch-error-http-controller-decorator';
 import { environment } from '../configuration/environment';
+import {
+  AmazonSNSOrderPublisher,
+  TopicArnByEvent,
+} from '../messaging/amazonsns/amazonsns-order-publisher';
+import { AmazonSNSService } from '../messaging/amazonsns/amazonsns-service';
 import { AmazonSQSOrderMessenger } from '../messaging/amazonsqs/amazonsqs-order-messenger';
 import { AmazonSQSService } from '../messaging/amazonsqs/amazonsqs-service';
 
@@ -26,12 +31,30 @@ export const makeUpdateOrder = (repository: Repository) => {
   return new UpdateOrder(repository.order, makeFindOrders(repository));
 };
 
+export const makeAmazonSNSOrderPublisher = () => {
+  const topicArnByEvent: TopicArnByEvent = {
+    onAccepted: environment.orderAcceptedSNSTopicArn,
+    onCancelled: environment.orderCancelledSNSTopicArn,
+  };
+
+  return new AmazonSNSOrderPublisher(
+    AmazonSNSService.getInstance().sns,
+    topicArnByEvent,
+  );
+};
+
 export const makeAcceptOrder = (repository: Repository) => {
-  return new AcceptOrder(makeUpdateOrder(repository));
+  return new AcceptOrder(
+    makeUpdateOrder(repository),
+    makeAmazonSNSOrderPublisher(),
+  );
 };
 
 export const makeCancelOrder = (repository: Repository) => {
-  return new CancelOrder(makeUpdateOrder(repository));
+  return new CancelOrder(
+    makeUpdateOrder(repository),
+    makeAmazonSNSOrderPublisher(),
+  );
 };
 
 export const makeFindOrdersHttpController = (repository: Repository) => {

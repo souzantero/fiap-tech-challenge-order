@@ -16,6 +16,8 @@ provider:
     DATABASE_URL: ${env:DATABASE_URL}
     PRODUCT_URL: ${env:PRODUCT_URL}
     AWS_SQS_ORDER_ADDED_QUEUE_URL: ${env:AWS_SQS_ORDER_ADDED_QUEUE_URL}
+    AWS_SNS_ORDER_ACCEPTED_TOPIC_ARN: ${env:AWS_SNS_ORDER_ACCEPTED_TOPIC_ARN}
+    AWS_SNS_ORDER_CANCELLED_TOPIC_ARN: ${env:AWS_SNS_ORDER_CANCELLED_TOPIC_ARN}
   tags:
     PROJECT: fiap-tech-challenge
   iamRoleStatements:
@@ -23,6 +25,14 @@ provider:
       Action:
         - "sqs:SendMessage"
       Resource: ${env:AWS_SQS_ORDER_ADDED_QUEUE_ARN}
+    - Effect: "Allow"
+      Action:
+        - "sns:Publish"
+      Resource: ${env:AWS_SNS_ORDER_ACCEPTED_TOPIC_ARN}
+    - Effect: "Allow"
+      Action:
+        - "sns:Publish"
+      Resource: ${env:AWS_SNS_ORDER_CANCELLED_TOPIC_ARN}
     
 functions:
   app:

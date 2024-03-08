@@ -9,6 +9,8 @@ export interface Environment {
   readonly orderAddedSQSQueueUrl: string;
   readonly paymentApprovedSQSQueueUrl: string;
   readonly paymentRejectedSQSQueueUrl: string;
+  readonly orderAcceptedSNSTopicArn: string;
+  readonly orderCancelledSNSTopicArn: string;
 }
 
 if (process.env.NODE_ENV) {
@@ -40,4 +42,7 @@ export const environment: Environment = {
     process.env.AWS_SQS_PAYMENT_APPROVED_QUEUE_URL ?? '',
   paymentRejectedSQSQueueUrl:
     process.env.AWS_SQS_PAYMENT_REJECTED_QUEUE_URL ?? '',
+  orderAcceptedSNSTopicArn: process.env.AWS_SNS_ORDER_ACCEPTED_TOPIC_ARN ?? '',
+  orderCancelledSNSTopicArn:
+    process.env.AWS_SNS_ORDER_CANCELLED_TOPIC_ARN ?? '',
 };
