@@ -8,7 +8,6 @@ describe('AddCustomer', () => {
         name: 'Customer Name',
         email: 'anyemail',
         document: 'anydocument',
-        password: 'anypassword',
       };
 
       const createdCustomer = {
@@ -29,7 +28,10 @@ describe('AddCustomer', () => {
       const addCustomer = new AddCustomer(customerRepository, authenticator);
 
       // Act
-      const returnedCustomer = await addCustomer.addOne(data);
+      const returnedCustomer = await addCustomer.addOne({
+        ...data,
+        password: 'anypassword',
+      });
 
       // Assert
       expect(customerRepository.findOneByDocument).toHaveBeenCalledWith(

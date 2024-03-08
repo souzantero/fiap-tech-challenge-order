@@ -12,6 +12,7 @@ describe('AddOneCustomerHttpController', () => {
         name: 'Customer Name',
         email: 'anyemail',
         document: 'anydocument',
+        password: 'anypassword',
       };
       const customer = {
         id: 'customer-id',
@@ -63,6 +64,7 @@ describe('AddOneCustomerHttpController', () => {
         name: 'Customer Name',
         email: 'anyemail',
         document: 'anydocument',
+        password: 'anypassword',
       };
       const addCustomer = {
         addOne: jest.fn().mockRejectedValue(new Error('AddOneCustomerError')),

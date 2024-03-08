@@ -30,7 +30,7 @@ export class AddCustomer {
       document,
     });
 
-    await this.authenticator.singUp({
+    await this.authenticator.signUp({
       username: document,
       password: password,
       email: email,

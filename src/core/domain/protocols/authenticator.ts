@@ -5,5 +5,5 @@ export type SignUpData = {
 };
 
 export interface Authenticator {
-  singUp(data: SignUpData): Promise<void>;
+  signUp(data: SignUpData): Promise<void>;
 }

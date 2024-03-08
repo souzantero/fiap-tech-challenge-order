@@ -6,7 +6,7 @@ import {
 export class AuthenticationFetchProvider implements Authenticator {
   constructor(private readonly url: string) {}
 
-  async singUp(data: SignUpData): Promise<void> {
+  async signUp(data: SignUpData): Promise<void> {
     const response = await fetch(`${this.url}/register`, {
       method: 'POST',
       body: JSON.stringify(data),
