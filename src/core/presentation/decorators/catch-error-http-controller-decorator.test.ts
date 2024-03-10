@@ -1,7 +1,4 @@
-import {
-  BadRequestError,
-  InternalServerError,
-} from '../controllers/http-controller';
+import { BadRequestError, InternalServerError } from '../protocols/http';
 import { CatchErrorHttpControllerDecorator } from './catch-error-http-controller-decorator';
 
 describe('CatchErrorHttpControllerDecorator', () => {

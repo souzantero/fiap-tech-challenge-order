@@ -9,6 +9,10 @@ import { CatchErrorHttpControllerDecorator } from '../../core/presentation/decor
 import { AuthenticationFetchProvider } from '../providers/fetch/authentication-fetch-provider';
 import { environment } from '../configuration/environment';
 
+export const makeAuthentication = () => {
+  return new AuthenticationFetchProvider(environment.authenticationUrl);
+};
+
 export const makeFindOneCustomerHttpController = (repository: Repository) => {
   return new CatchErrorHttpControllerDecorator(
     new FindOneCustomerHttpController(new FindCustomer(repository.customer)),
@@ -16,12 +20,9 @@ export const makeFindOneCustomerHttpController = (repository: Repository) => {
 };
 
 export const makeAddOneCustomerHttpController = (repository: Repository) => {
-  const authenticator = new AuthenticationFetchProvider(
-    environment.authenticationUrl,
-  );
   return new CatchErrorHttpControllerDecorator(
     new AddOneCustomerHttpController(
-      new AddCustomer(repository.customer, authenticator),
+      new AddCustomer(repository.customer, makeAuthentication()),
     ),
   );
 };

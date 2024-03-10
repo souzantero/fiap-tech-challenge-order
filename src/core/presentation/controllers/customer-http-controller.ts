@@ -10,7 +10,7 @@ import {
   HttpRequest,
   HttpResponse,
   NotFoundError,
-} from './http-controller';
+} from '../protocols/http';
 
 export class AddOneCustomerHttpController implements HttpController<Customer> {
   constructor(private readonly addCustomer: AddCustomer) {}

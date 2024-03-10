@@ -3,7 +3,7 @@ import {
   FindOneOrderByIdError,
   ProductsNotFoundError,
 } from '../../application/use-cases';
-import { BadRequestError } from './http-controller';
+import { BadRequestError } from '../protocols/http';
 import {
   AddOneOrderHttpController,
   CheckOrderIsPaidHttpController,

@@ -1,4 +1,4 @@
-import { adaptRoute } from './route';
+import { adaptRoute } from '../adapters/express';
 
 describe('adaptRoute', () => {
   it('should return a function', () => {

@@ -7,11 +7,13 @@ import {
   makePayOrderHttpController,
   makeUpdateOrderStatusHttpController,
 } from '../factories/order-factories';
-import { adaptRoute } from './route';
+import { adaptMiddleware, adaptRoute } from '../adapters/express';
+import { makeAuthenticateHttpMiddleware } from '../factories/middlewares/authenticate-http-middleware-factory';
 
 export const orderRoutes = (router: Router, repository: Repository) => {
   router.post(
     '/orders/checkout',
+    adaptMiddleware(makeAuthenticateHttpMiddleware(repository)),
     adaptRoute(makeAddOneOrderHttpController(repository)),
   );
   router.get('/orders', adaptRoute(makeFindOrdersHttpController(repository)));
@@ -21,10 +23,12 @@ export const orderRoutes = (router: Router, repository: Repository) => {
   );
   router.post(
     '/orders/:id/pay',
+    adaptMiddleware(makeAuthenticateHttpMiddleware(repository)),
     adaptRoute(makePayOrderHttpController(repository)),
   );
   router.patch(
     '/orders/:id/status',
+    adaptMiddleware(makeAuthenticateHttpMiddleware(repository)),
     adaptRoute(makeUpdateOrderStatusHttpController(repository)),
   );
 };

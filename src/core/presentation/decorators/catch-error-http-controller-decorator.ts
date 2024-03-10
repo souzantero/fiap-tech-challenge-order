@@ -4,7 +4,7 @@ import {
   HttpRequest,
   HttpResponse,
   InternalServerError,
-} from '../controllers/http-controller';
+} from '../protocols/http';
 
 export class CatchErrorHttpControllerDecorator<T> implements HttpController<T> {
   constructor(private readonly httpController: HttpController<T>) {}

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { Repository } from '../../core/domain/repositories/repository';
-import { adaptRoute } from './route';
+import { adaptRoute } from '../adapters/express';
 import {
   makeAddOneCustomerHttpController,
   makeFindOneCustomerHttpController,

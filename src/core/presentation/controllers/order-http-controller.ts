@@ -13,7 +13,7 @@ import {
   HttpController,
   HttpRequest,
   HttpResponse,
-} from './http-controller';
+} from '../protocols/http';
 
 export class AddOneOrderHttpController implements HttpController<Order> {
   constructor(private readonly addOrder: AddOrder) {}

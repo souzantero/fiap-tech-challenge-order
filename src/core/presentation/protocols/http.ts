@@ -1,8 +1,13 @@
+export interface HttpMiddleware<T> {
+  handle(request: HttpRequest): Promise<HttpResponse<T>>;
+}
+
 export interface HttpController<T> {
   handle(request: HttpRequest): Promise<HttpResponse<T>>;
 }
 
 export interface HttpRequest {
+  accessToken?: string;
   body: any;
   params: any;
   query: any;
@@ -32,6 +37,8 @@ export enum HttpStatus {
   Created = 201,
   NoContent = 204,
   BadRequest = 400,
+  Unauthorized = 401,
+  Forbidden = 403,
   NotFound = 404,
   InternalServer = 500,
 }
@@ -58,5 +65,17 @@ export class BadRequestError extends HttpError {
 export class NotFoundError extends HttpError {
   constructor(message: string) {
     super(HttpStatus.NotFound, message);
+  }
+}
+
+export class ForbiddenError extends HttpError {
+  constructor(message: string) {
+    super(HttpStatus.Forbidden, message);
+  }
+}
+
+export class UnauthorizedError extends HttpError {
+  constructor(message: string) {
+    super(HttpStatus.Unauthorized, message);
   }
 }

@@ -2,7 +2,7 @@ import {
   AddOneCustomerHttpController,
   FindOneCustomerHttpController,
 } from './customer-http-controller';
-import { BadRequestError, NotFoundError } from './http-controller';
+import { BadRequestError, NotFoundError } from '../protocols/http';
 
 describe('AddOneCustomerHttpController', () => {
   describe('handle', () => {
