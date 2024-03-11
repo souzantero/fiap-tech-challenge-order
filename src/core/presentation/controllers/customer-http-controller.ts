@@ -3,7 +3,12 @@ import {
   AddOneCustomerError,
   AddCustomer,
   FindCustomer,
+  CustomerNotFoundError,
 } from '../../application/use-cases';
+import {
+  AnonymizeCustomer,
+  AnonymizeCustomerError,
+} from '../../application/use-cases/anonymize-customer';
 import {
   BadRequestError,
   HttpController,
@@ -11,7 +16,6 @@ import {
   HttpResponse,
   NotFoundError,
 } from '../protocols/http';
-import { AnonymizeCustomer } from 'src/core/application/use-cases/anonymize-customer';
 
 export class AddOneCustomerHttpController implements HttpController<Customer> {
   constructor(private readonly addCustomer: AddCustomer) {}
@@ -55,7 +59,17 @@ export class AnonymizeCustomerHttpController implements HttpController<void> {
       throw new BadRequestError('Missing required fields');
     }
 
-    await this.anonymizeCustomer.anonymize({ name, document, email });
-    return HttpResponse.noContent();
+    try {
+      await this.anonymizeCustomer.anonymize({ name, document, email });
+      return HttpResponse.noContent();
+    } catch (error) {
+      if (error instanceof AnonymizeCustomerError) {
+        throw new BadRequestError(error.message);
+      } else if (error instanceof CustomerNotFoundError) {
+        throw new NotFoundError(error.message);
+      }
+
+      throw error;
+    }
   }
 }
