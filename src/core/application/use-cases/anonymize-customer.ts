@@ -1,9 +1,11 @@
 import { Hasher } from 'src/core/domain/protocols/hasher';
 import { Logger } from 'src/core/domain/protocols/logger';
 import { CustomerRepository } from '../../domain/repositories/customer-repository';
+import { Authenticator } from '../../domain/protocols/authenticator';
 
 export class AnonymizeCustomer {
   constructor(
+    private readonly authenticator: Authenticator,
     private readonly customerRepository: CustomerRepository,
     private readonly hasher: Hasher,
     private readonly logger: Logger,
@@ -20,6 +22,8 @@ export class AnonymizeCustomer {
       throw new AnonymizeCustomerError('Name does not match');
     if (customer.email !== email)
       throw new AnonymizeCustomerError('Email does not match');
+
+    await this.authenticator.unregister(document);
 
     const anonymizedName = await this.hasher.hash(name);
     const anonymizedEmail = await this.hasher.hash(email);

@@ -21,6 +21,23 @@ export class AuthenticationFetchProvider implements Authenticator, Authorizer {
     }
   }
 
+  async unregister(username: string): Promise<void> {
+    const response = await fetch(`${this.url}/unregister`, {
+      method: 'DELETE',
+      body: JSON.stringify({ username }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    console.log('unregister', data);
+
+    if (!response.ok) {
+      throw new Error('Failed to unregister');
+    }
+  }
+
   async authorize(accessToken: string): Promise<string> {
     const response = await fetch(`${this.url}/authorize`, {
       method: 'POST',

@@ -6,4 +6,5 @@ export type SignUpData = {
 
 export interface Authenticator {
   signUp(data: SignUpData): Promise<void>;
+  unregister(username: string): Promise<void>;
 }

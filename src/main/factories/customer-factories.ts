@@ -32,11 +32,12 @@ export const makeAddOneCustomerHttpController = (repository: Repository) => {
 };
 
 export const makeAnonymizeCustomerHttpController = (repository: Repository) => {
+  const auth = makeAuthentication();
   const hasher = new BcryptAdapter(12);
   const logger = new ConsoleAdapter();
   return new CatchErrorHttpControllerDecorator(
     new AnonymizeCustomerHttpController(
-      new AnonymizeCustomer(repository.customer, hasher, logger),
+      new AnonymizeCustomer(auth, repository.customer, hasher, logger),
     ),
   );
 };
