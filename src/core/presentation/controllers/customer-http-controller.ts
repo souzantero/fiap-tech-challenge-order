@@ -11,6 +11,7 @@ import {
   HttpResponse,
   NotFoundError,
 } from '../protocols/http';
+import { AnonymizeCustomer } from 'src/core/application/use-cases/anonymize-customer';
 
 export class AddOneCustomerHttpController implements HttpController<Customer> {
   constructor(private readonly addCustomer: AddCustomer) {}
@@ -43,5 +44,18 @@ export class FindOneCustomerHttpController implements HttpController<Customer> {
     const customer = await this.findCustomer.findOneByDocument(document);
     if (!customer) throw new NotFoundError('Customer not found');
     return HttpResponse.ok(customer);
+  }
+}
+
+export class AnonymizeCustomerHttpController implements HttpController<void> {
+  constructor(private readonly anonymizeCustomer: AnonymizeCustomer) {}
+  async handle(request: HttpRequest): Promise<HttpResponse<void>> {
+    const { name, email, document } = request.body;
+    if (!name || !email || !document) {
+      throw new BadRequestError('Missing required fields');
+    }
+
+    await this.anonymizeCustomer.anonymize({ name, document, email });
+    return HttpResponse.noContent();
   }
 }

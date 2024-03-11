@@ -9,6 +9,13 @@ export interface CreateOneCustomerRepository {
   createOne(data: CreateOneCustomerData): Promise<Customer>;
 }
 
+export interface UpdateOneCustomerRepository {
+  updateOneById(
+    id: string,
+    data: Partial<CreateOneCustomerData>,
+  ): Promise<Customer>;
+}
+
 export interface FindOneCustomerRepository {
   findOneById(id: string): Promise<Customer | null>;
   findOneByDocument(document: string): Promise<Customer | null>;
@@ -16,4 +23,5 @@ export interface FindOneCustomerRepository {
 }
 
 export type CustomerRepository = CreateOneCustomerRepository &
+  UpdateOneCustomerRepository &
   FindOneCustomerRepository;

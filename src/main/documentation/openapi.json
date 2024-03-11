@@ -67,6 +67,74 @@
         }
       }
     },
+    "/customers/anonymize": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Anonimiza um cliente",
+        "operationId": "anonymizeCustomer",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerAnonymizeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Cliente anonimizado com sucesso"
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cliente não encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/customers/document/{document}": {
       "get": {
         "tags": [
@@ -521,7 +589,49 @@
         "required": [
           "name",
           "email",
-          "document"
+          "document",
+          "password"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 255,
+            "example": "Tom Zé",
+            "description": "Nome do cliente"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "tomze@email.com",
+            "description": "E-mail do cliente",
+            "minLength": 3,
+            "maxLength": 255,
+            "pattern": "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+          },
+          "document": {
+            "type": "string",
+            "description": "CPF do cliente",
+            "minLength": 11,
+            "maxLength": 11,
+            "pattern": "^[0-9]{11}$",
+            "example": "12345678900"
+          },
+          "password": {
+            "type": "string",
+            "description": "Senha do cliente",
+            "minLength": 8,
+            "maxLength": 255
+          }
+        }
+      },
+      "CustomerAnonymizeInput": {
+        "type": "object",
+        "required": [
+          "name",
+          "email",
+          "document",
+          "password"
         ],
         "properties": {
           "name": {

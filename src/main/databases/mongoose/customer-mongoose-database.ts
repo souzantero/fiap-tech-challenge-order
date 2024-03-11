@@ -56,6 +56,15 @@ export class CustomerMongooseDatabase implements CustomerRepository {
     return toEntity(customer);
   }
 
+  async updateOneById(
+    id: string,
+    data: Partial<CreateOneCustomerData>,
+  ): Promise<Customer> {
+    await CustomerModel.updateOne({ _id: id }, data);
+    const customer = await CustomerModel.findById(id);
+    return toEntity(customer);
+  }
+
   async findOneById(id: string): Promise<Customer | null> {
     const customer = await CustomerModel.findOne({ _id: id, deletedAt: null });
     if (!customer) {

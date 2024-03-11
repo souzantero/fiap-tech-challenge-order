@@ -25,6 +25,13 @@ export class CustomerPrismaDatabase implements CustomerRepository {
     return CustomerPrismaDatabase.toModel(customer);
   }
 
+  updateOneById(
+    id: string,
+    data: Partial<CreateOneCustomerData>,
+  ): Promise<Customer> {
+    throw new Error('Method not implemented.');
+  }
+
   async findOneById(id: string): Promise<Customer | null> {
     const customer = await this.prisma.customer.findUnique({ where: { id } });
     return customer ? CustomerPrismaDatabase.toModel(customer) : null;
