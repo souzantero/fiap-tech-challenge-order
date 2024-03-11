@@ -8,13 +8,21 @@ import {
   HttpResponse,
 } from '../protocols/http';
 
-export class AuthenticateHttpMiddleware implements HttpMiddleware<Customer> {
+export type AuthorizationHttpMiddlewareResponse = {
+  customer: Customer;
+};
+
+export class AuthenticateHttpMiddleware
+  implements HttpMiddleware<AuthorizationHttpMiddlewareResponse>
+{
   constructor(
     private readonly authorizer: Authorizer,
     private readonly findCustomer: FindCustomer,
   ) {}
 
-  async handle(request: HttpRequest): Promise<HttpResponse<Customer>> {
+  async handle(
+    request: HttpRequest,
+  ): Promise<HttpResponse<AuthorizationHttpMiddlewareResponse>> {
     const { accessToken } = request;
     if (!accessToken) {
       throw new ForbiddenError('Missing authorization');
@@ -27,7 +35,7 @@ export class AuthenticateHttpMiddleware implements HttpMiddleware<Customer> {
         throw new ForbiddenError('Customer not found');
       }
 
-      return HttpResponse.ok(customer);
+      return HttpResponse.ok({ customer });
     } catch (error) {
       throw new ForbiddenError((error as Error).message);
     }
