@@ -33,19 +33,28 @@ Como iniciar o servidor em modo de desenvolvimento.
 Crie um arquivo `.env` na raiz do diretório e cole o seguinte conteúdo.
 
 ```
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/fiap_tech_challenge_order_db
+PORT=_PORT_
+DATABASE_URL=_DATABASE_URL_
+AUTHENTICATION_URL=_AUTHENTICATION_URL_
+PRODUCT_URL=_PRODUCT_URL_
+AWS_ACCESS_KEY_ID=_AWS_ACCESS_KEY_ID_
+AWS_SECRET_ACCESS_KEY=_AWS_SECRET_ACCESS_KEY_
+AWS_REGION=_AWS_REGION_
+AWS_SQS_ORDER_ADDED_QUEUE_URL=_AWS_SQS_ORDER_ADDED_QUEUE_URL_
+AWS_SQS_PAYMENT_APPROVED_QUEUE_URL=_AWS_SQS_PAYMENT_APPROVED_QUEUE_URL_
+AWS_SQS_PAYMENT_REJECTED_QUEUE_URL=_AWS_SQS_PAYMENT_REJECTED_QUEUE_URL_
+AWS_SQS_PAYMENT_APPROVED_QUEUE_ARN=_AWS_SQS_PAYMENT_APPROVED_QUEUE_ARN_
+AWS_SQS_PAYMENT_REJECTED_QUEUE_ARN=_AWS_SQS_PAYMENT_REJECTED_QUEUE_ARN_
+AWS_SNS_ORDER_ACCEPTED_TOPIC_ARN=_AWS_SNS_ORDER_ACCEPTED_TOPIC_ARN_
+AWS_SNS_ORDER_CANCELLED_TOPIC_ARN=_AWS_SNS_ORDER_CANCELLED_TOPIC_ARN_
 ```
 
-Execute o serviço Docker Compose para iniciar o PostgreSQL.
+Não se esqueça de alterar os valores das variáveis de ambiente
+
+Execute o serviço Docker Compose para iniciar o Mongo.
 
 ```bash
 docker-compose up -d database
-```
-
-Crie o banco de dados.
-
-```bash
-npx prisma migrate dev
 ```
 
 Inicie a aplicação.
@@ -59,14 +68,6 @@ Para iniciar em modo de produção.
 ```bash
 npm run build
 npm run start
-```
-
-Como iniciar o servidor com o Docker Compose
-
-Execute o serviço Docker Compose para iniciar o servidor Node.js.
-
-```bash
-docker-compose up -d server
 ```
 
 ## Open API
